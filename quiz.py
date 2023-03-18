@@ -1,6 +1,8 @@
 #The Quiz and Question classes define a particular quiz
 import datetime
 import sys
+#TODO: import randommodule to randomize questions
+imort random
 
 class Quiz:
 	def __init__(self):
@@ -11,6 +13,7 @@ class Quiz:
 		self.score = 0 
 		self.correct_count = 0
 		self.total_points = 0
+		self.completion_time = 0
 
 	def print_header(self):
 		print("\n\n********************************************")
@@ -26,6 +29,7 @@ class Quiz:
 		#TODO: Print the results
 		print(f"RESULTS for {quiztaker}", file = thefile, flush = True)
 		print(f"Date: {datetime.datetime.today()}", file = thefile, flush = True)
+		print(f"ELAPSED TIME: {self.completion_time}", file = thefile, flush = True)
 		print(f"QUESTIONS: {self.correct_count} out of {len(self.questions)} correct", file = thefile, flush = True)
 		print(f"SCORE: {self.score} points out of possible {self.total_points}", file = thefile, flush = True)
 		print("********************************************\n", file = thefile, flush = True)
@@ -40,6 +44,12 @@ class Quiz:
 		 # TODO: print the header
 		 self.print_header()
 
+		 #TODO: randomize the questions
+		 random.shuffle(self.questions)
+
+		 #TODO: record the start time of quiz
+		 starttime = datetime.datetime.now()
+
 		 # TODO: execute each question and record the result
 		 for q in self.questions:
 			 q.ask()
@@ -48,6 +58,27 @@ class Quiz:
 				 self.score += q.points
 				 
 		 print("-------------------------------------")
+
+		 #TODO: record the end time of quiz
+		 endtime = datetime.datetime.now()
+
+		 #TODO: ask user if they want to redo any  incorrect questions
+		 if self.correct_count != len(self.questions):
+			 response = input("\nIt looks like you missed some questions. Redo the incorrect questions? (y/n)").lower()
+			 if response[0] == "y":
+				wrong_qs = [q for q in self.questions if q.is_correct = False]
+				for q in self.questions:
+					q.ask()
+					if (q.is_correct):
+					self.correct_count += 1
+					self.score += q.points
+				 
+				print("-------------------------------------\n")
+				endtime = datetime.datetime.now()
+
+
+		 self.completion_time = endtime - starttime
+		 self.completion_time = datetime.timedelta(seconds = round(self.completion_time.total_seconds()))
 
 		 # TODO: return the results
 		 return (self.score, self.correct_count, self.total_points)
